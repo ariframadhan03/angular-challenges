@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, EventEmitter, Input, Output } from '@angular/core';
 import { StudentStore } from '../../data-access/student.store';
 import { TeacherStore } from '../../data-access/teacher.store';
 import { CardType } from '../../model/card.model';
@@ -8,7 +8,7 @@ import { CardType } from '../../model/card.model';
   template: `
     <div class="border-grey-300 flex justify-between border px-2 py-1">
       {{ name }}
-      <button (click)="delete(id)">
+      <button (click)="delete.emit(id)">
         <img class="h-5" src="assets/svg/trash.svg" />
       </button>
     </div>
@@ -20,16 +20,18 @@ export class ListItemComponent {
   @Input() name!: string;
   @Input() type!: CardType;
 
+  @Output() delete: EventEmitter<number> = new EventEmitter<number>();
+
   constructor(
     private teacherStore: TeacherStore,
     private studentStore: StudentStore,
   ) {}
 
-  delete(id: number) {
-    if (this.type === CardType.TEACHER) {
-      this.teacherStore.deleteOne(id);
-    } else if (this.type === CardType.STUDENT) {
-      this.studentStore.deleteOne(id);
-    }
-  }
+  // delete(id: number) {
+  //   if (this.type === CardType.TEACHER) {
+  //     this.teacherStore.deleteOne(id);
+  //   } else if (this.type === CardType.STUDENT) {
+  //     this.studentStore.deleteOne(id);
+  //   }
+  // }
 }
